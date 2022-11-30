@@ -1,3 +1,4 @@
+import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/chat/index.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -67,8 +68,9 @@ class _AllChatPageWidgetState extends State<AllChatPageWidget> {
               PagedListView<DocumentSnapshot<Object?>?, ChatsRecord>(
                 pagingController: () {
                   final Query<Object?> Function(Query<Object?>) queryBuilder =
-                      (chatsRecord) => chatsRecord.orderBy('last_message_time',
-                          descending: true);
+                      (chatsRecord) => chatsRecord
+                          .where('users', arrayContains: currentUserReference)
+                          .orderBy('last_message_time', descending: true);
                   if (_pagingController != null) {
                     final query = queryBuilder(ChatsRecord.collection);
                     if (query != _pagingQuery) {
@@ -86,6 +88,7 @@ class _AllChatPageWidgetState extends State<AllChatPageWidget> {
                   _pagingController!.addPageRequestListener((nextPageMarker) {
                     queryChatsRecordPage(
                       queryBuilder: (chatsRecord) => chatsRecord
+                          .where('users', arrayContains: currentUserReference)
                           .orderBy('last_message_time', descending: true),
                       nextPageMarker: nextPageMarker,
                       pageSize: 25,
