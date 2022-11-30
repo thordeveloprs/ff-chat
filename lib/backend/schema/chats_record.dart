@@ -35,6 +35,8 @@ abstract class ChatsRecord implements Built<ChatsRecord, ChatsRecordBuilder> {
   @BuiltValueField(wireName: 'group_image')
   String? get groupImage;
 
+  bool? get isGroup;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -44,7 +46,8 @@ abstract class ChatsRecord implements Built<ChatsRecord, ChatsRecordBuilder> {
     ..lastMessage = ''
     ..lastMessageSeenBy = ListBuilder()
     ..groupName = ''
-    ..groupImage = '';
+    ..groupImage = ''
+    ..isGroup = false;
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('chats');
@@ -75,6 +78,7 @@ Map<String, dynamic> createChatsRecordData({
   DocumentReference? lastMessageSentBy,
   String? groupName,
   String? groupImage,
+  bool? isGroup,
 }) {
   final firestoreData = serializers.toFirestore(
     ChatsRecord.serializer,
@@ -88,7 +92,8 @@ Map<String, dynamic> createChatsRecordData({
         ..lastMessageSentBy = lastMessageSentBy
         ..lastMessageSeenBy = null
         ..groupName = groupName
-        ..groupImage = groupImage,
+        ..groupImage = groupImage
+        ..isGroup = isGroup,
     ),
   );
 

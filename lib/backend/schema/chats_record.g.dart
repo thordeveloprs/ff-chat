@@ -91,6 +91,13 @@ class _$ChatsRecordSerializer implements StructuredSerializer<ChatsRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.isGroup;
+    if (value != null) {
+      result
+        ..add('isGroup')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -161,6 +168,10 @@ class _$ChatsRecordSerializer implements StructuredSerializer<ChatsRecord> {
           result.groupImage = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'isGroup':
+          result.isGroup = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -194,6 +205,8 @@ class _$ChatsRecord extends ChatsRecord {
   @override
   final String? groupImage;
   @override
+  final bool? isGroup;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$ChatsRecord([void Function(ChatsRecordBuilder)? updates]) =>
@@ -209,6 +222,7 @@ class _$ChatsRecord extends ChatsRecord {
       this.lastMessageSeenBy,
       this.groupName,
       this.groupImage,
+      this.isGroup,
       this.ffRef})
       : super._();
 
@@ -232,6 +246,7 @@ class _$ChatsRecord extends ChatsRecord {
         lastMessageSeenBy == other.lastMessageSeenBy &&
         groupName == other.groupName &&
         groupImage == other.groupImage &&
+        isGroup == other.isGroup &&
         ffRef == other.ffRef;
   }
 
@@ -244,14 +259,18 @@ class _$ChatsRecord extends ChatsRecord {
                     $jc(
                         $jc(
                             $jc(
-                                $jc($jc($jc(0, users.hashCode), userA.hashCode),
-                                    userB.hashCode),
-                                lastMessage.hashCode),
-                            lastMessageTime.hashCode),
-                        lastMessageSentBy.hashCode),
-                    lastMessageSeenBy.hashCode),
-                groupName.hashCode),
-            groupImage.hashCode),
+                                $jc(
+                                    $jc(
+                                        $jc($jc(0, users.hashCode),
+                                            userA.hashCode),
+                                        userB.hashCode),
+                                    lastMessage.hashCode),
+                                lastMessageTime.hashCode),
+                            lastMessageSentBy.hashCode),
+                        lastMessageSeenBy.hashCode),
+                    groupName.hashCode),
+                groupImage.hashCode),
+            isGroup.hashCode),
         ffRef.hashCode));
   }
 
@@ -267,6 +286,7 @@ class _$ChatsRecord extends ChatsRecord {
           ..add('lastMessageSeenBy', lastMessageSeenBy)
           ..add('groupName', groupName)
           ..add('groupImage', groupImage)
+          ..add('isGroup', isGroup)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -320,6 +340,10 @@ class ChatsRecordBuilder implements Builder<ChatsRecord, ChatsRecordBuilder> {
   String? get groupImage => _$this._groupImage;
   set groupImage(String? groupImage) => _$this._groupImage = groupImage;
 
+  bool? _isGroup;
+  bool? get isGroup => _$this._isGroup;
+  set isGroup(bool? isGroup) => _$this._isGroup = isGroup;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -340,6 +364,7 @@ class ChatsRecordBuilder implements Builder<ChatsRecord, ChatsRecordBuilder> {
       _lastMessageSeenBy = $v.lastMessageSeenBy?.toBuilder();
       _groupName = $v.groupName;
       _groupImage = $v.groupImage;
+      _isGroup = $v.isGroup;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -374,6 +399,7 @@ class ChatsRecordBuilder implements Builder<ChatsRecord, ChatsRecordBuilder> {
               lastMessageSeenBy: _lastMessageSeenBy?.build(),
               groupName: groupName,
               groupImage: groupImage,
+              isGroup: isGroup,
               ffRef: ffRef);
     } catch (_) {
       late String _$failedField;
