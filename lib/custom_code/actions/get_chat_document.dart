@@ -12,13 +12,20 @@ Future<String> getChatDocument(
   DocumentReference? chatRef,
   UsersRecord? chatUser,
 ) async {
+  print("First");
   if (chatRef == null) {
+    print("Second");
     return chatUser!.displayName ?? 'Display user';
   } else {
+    print("Third");
     ChatsRecord chatRecord = await ChatsRecord.getDocumentOnce(chatRef);
-    if (chatRecord.groupName == null) {
+    if (chatRecord.groupName == null || chatRecord.groupName!.isEmpty) {
+      print("Fourth");
       return chatUser!.displayName ?? 'Display user';
+    } else {
+      print("Group Name:-${chatRecord.groupName}");
     }
+    print("Fivth");
     return chatRecord.groupName ?? 'Custom Group Name';
   }
 }
