@@ -242,58 +242,77 @@ class _NewGroupWidgetState extends State<NewGroupWidget> {
                   ),
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 34),
-                    child: FFButtonWidget(
-                      onPressed: () async {
-                        if (checkboxListTileCheckedItems.length > 1) {
-                          groupChat = await FFChatManager.instance.createChat(
-                            checkboxListTileCheckedItems
-                                .map((e) => e.reference)
-                                .toList(),
-                          );
-                          context.pushNamed(
-                            'ChatPageView',
-                            queryParams: {
-                              'chatRef': serializeParam(
-                                groupChat?.reference,
-                                ParamType.DocumentReference,
-                              ),
-                            }.withoutNulls,
-                          );
-                        } else {
-                          context.pushNamed(
-                            'ChatPageView',
-                            queryParams: {
-                              'chatUser': serializeParam(
-                                functions.getFirstUserObject(
-                                    checkboxListTileCheckedItems.toList()),
-                                ParamType.Document,
-                              ),
-                            }.withoutNulls,
-                            extra: <String, dynamic>{
-                              'chatUser': functions.getFirstUserObject(
-                                  checkboxListTileCheckedItems.toList()),
-                            },
-                          );
-                        }
+                    child: InkWell(
+                      onLongPress: () async {
+                        groupChat = await FFChatManager.instance.createChat(
+                          checkboxListTileCheckedItems
+                              .map((e) => e.reference)
+                              .toList(),
+                        );
+                        context.pushNamed(
+                          'ChatPageView',
+                          queryParams: {
+                            'chatRef': serializeParam(
+                              groupChat?.reference,
+                              ParamType.DocumentReference,
+                            ),
+                          }.withoutNulls,
+                        );
 
                         setState(() {});
                       },
-                      text: 'Create Chat Room',
-                      options: FFButtonOptions(
-                        width: 130,
-                        height: 40,
-                        color: Color(0xFF4E39F9),
-                        textStyle: FlutterFlowTheme.of(context).title3.override(
-                              fontFamily: 'Lexend Deca',
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                        borderSide: BorderSide(
-                          color: Colors.transparent,
-                          width: 1,
+                      child: FFButtonWidget(
+                        onPressed: () async {
+                          if (checkboxListTileCheckedItems.length > 1) {
+                            context.pushNamed(
+                              'GroupName',
+                              queryParams: {
+                                'listOfSelectedUsers': serializeParam(
+                                  checkboxListTileCheckedItems,
+                                  ParamType.Document,
+                                  true,
+                                ),
+                              }.withoutNulls,
+                              extra: <String, dynamic>{
+                                'listOfSelectedUsers':
+                                    checkboxListTileCheckedItems,
+                              },
+                            );
+                          } else {
+                            context.pushNamed(
+                              'ChatPageView',
+                              queryParams: {
+                                'chatUser': serializeParam(
+                                  functions.getFirstUserObject(
+                                      checkboxListTileCheckedItems.toList()),
+                                  ParamType.Document,
+                                ),
+                              }.withoutNulls,
+                              extra: <String, dynamic>{
+                                'chatUser': functions.getFirstUserObject(
+                                    checkboxListTileCheckedItems.toList()),
+                              },
+                            );
+                          }
+                        },
+                        text: 'Create Chat Room',
+                        options: FFButtonOptions(
+                          width: 130,
+                          height: 40,
+                          color: Color(0xFF4E39F9),
+                          textStyle:
+                              FlutterFlowTheme.of(context).title3.override(
+                                    fontFamily: 'Lexend Deca',
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                   ),

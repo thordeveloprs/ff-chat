@@ -3,8 +3,10 @@ import '../flutter_flow/chat/index.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../custom_code/actions/index.dart' as actions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ChatPageViewWidget extends StatefulWidget {
@@ -33,11 +35,21 @@ class _ChatPageViewWidgetState extends State<ChatPageViewWidget> {
     return _chatInfo?.isGroupChat ?? false;
   }
 
+  String? response;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      response = await actions.getChatDocument(
+        widget.chatRef,
+        widget.chatUser,
+      );
+      setState(() => FFAppState().name = response!);
+    });
+
     FFChatManager.instance
         .getChatInfo(
       otherUserRecord: widget.chatUser,
@@ -69,13 +81,13 @@ class _ChatPageViewWidgetState extends State<ChatPageViewWidget> {
             size: 24,
           ),
           onPressed: () async {
-            context.pop();
+            context.pushNamed('AllChatPage');
           },
         ),
         title: Stack(
           children: [
             Text(
-              'Group Chat',
+              FFAppState().name,
               style: FlutterFlowTheme.of(context).bodyText1.override(
                     fontFamily: 'Poppins',
                     color: Colors.black,

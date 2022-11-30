@@ -21,6 +21,8 @@ class FFAppState {
   String profilePic = '';
 
   String groupImage = '';
+
+  String name = '';
 }
 
 LatLng? _latLngFromString(String? val) {
